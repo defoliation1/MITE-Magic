@@ -26,7 +26,7 @@ public abstract class MagicCurse implements Curse{
         return 10;
     }
 
-    public final CurseLevel withLevel(int level){
+    public final CurseLevel<MagicCurse> withLevel(int level){
         return new CurseLevel(this,level);
     }
 
