@@ -2,9 +2,13 @@ package pers.defoliation.magic.liar;
 
 import net.minecraft.*;
 import pers.defoliation.magic.curse.BlasterCurse;
+import pers.defoliation.magic.curse.CurseLevel;
+import pers.defoliation.magic.curse.CurseManager;
 import pers.defoliation.magic.curse.Curses;
 import team.unknowndomain.liar.annotation.Deceive;
 import team.unknowndomain.liar.annotation.Liar;
+
+import java.util.Optional;
 
 @Liar(EntityCreeper.class)
 public abstract class EntityCreeperLiar extends EntityMonster {
@@ -30,17 +34,14 @@ public abstract class EntityCreeperLiar extends EntityMonster {
                 EntityHuman entityHuman = (EntityHuman) j;
                 int maxLevel = 0;
                 for (ItemStack itemStack : entityHuman.bn.b) {
-                    if (EnchantmentManager.hasEnchantment(itemStack, Curses.blaster)) {
-                        int level = EnchantmentManager.getEnchantmentLevel(Curses.blaster, itemStack);
-                        if (level > maxLevel)
-                            maxLevel = level;
-                    }
-                }
-                if (EnchantmentManager.hasEnchantment(entityHuman.getHeldItemStack(), Curses.blaster)) {
-                    int level = EnchantmentManager.getEnchantmentLevel(Curses.blaster, entityHuman.getHeldItemStack());
-                    if (level > maxLevel)
+                    int level = getLevel(itemStack);
+                    if(level>maxLevel)
                         maxLevel = level;
                 }
+                int level = getLevel(entityHuman.getHeldItemStack());
+                if (level > maxLevel)
+                    maxLevel = level;
+
                 if(maxLevel>0){
                     bq = br;
                     this.bs = BlasterCurse.getExplosiveSize(maxLevel);
@@ -76,6 +77,15 @@ public abstract class EntityCreeperLiar extends EntityMonster {
             }
         }
         super.l_();
+    }
+
+    public int getLevel(ItemStack itemStack){
+        if(itemStack==null)
+            return 0;
+        Optional<CurseLevel<BlasterCurse>> curseFromItemStack = CurseManager.INSTANCE.getCurseFromItemStack(itemStack, Curses.blaster);
+        if(curseFromItemStack.isPresent())
+            return curseFromItemStack.get().level;
+        else return 0;
     }
 
     @Deceive

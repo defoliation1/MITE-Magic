@@ -2,10 +2,14 @@ package pers.defoliation.magic.liar;
 
 import net.minecraft.*;
 import pers.defoliation.magic.Main;
+import pers.defoliation.magic.curse.CurseLevel;
+import pers.defoliation.magic.curse.CurseManager;
 import pers.defoliation.magic.curse.Curses;
 import pers.defoliation.magic.curse.RustCurse;
 import team.unknowndomain.liar.annotation.Deceive;
 import team.unknowndomain.liar.annotation.Liar;
+
+import java.util.Optional;
 
 @Liar(ItemStack.class)
 public class ItemStackLiar {
@@ -24,9 +28,11 @@ public class ItemStackLiar {
         if (!this.g() || damage < 1) {
             return null;
         }
-        int rustLevel = EnchantmentManager.getEnchantmentLevel(Curses.rust, (ItemStack) (Object) this);
-        if(rustLevel>0)
-            damage = RustCurse.modifier(damage,rustLevel);
+        Optional<CurseLevel<RustCurse>> curseFromItemStack = CurseManager.INSTANCE.getCurseFromItemStack((ItemStack) (Object) this, Curses.rust);
+        if (curseFromItemStack.isPresent()) {
+            damage = RustCurse.modifier(damage, curseFromItemStack.get().level);
+        }
+
         final float fraction_of_unbreaking = this.getEnchantmentLevelFraction(Enchantment.t);
         if (fraction_of_unbreaking > 0.0f) {
             int points_negated = 0;

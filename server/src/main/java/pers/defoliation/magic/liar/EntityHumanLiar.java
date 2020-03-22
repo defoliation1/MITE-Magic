@@ -1,10 +1,14 @@
 package pers.defoliation.magic.liar;
 
 import net.minecraft.*;
+import pers.defoliation.magic.curse.CurseLevel;
+import pers.defoliation.magic.curse.CurseManager;
 import pers.defoliation.magic.curse.Curses;
 import pers.defoliation.magic.curse.WeakCurse;
 import team.unknowndomain.liar.annotation.Deceive;
 import team.unknowndomain.liar.annotation.Liar;
+
+import java.util.Optional;
 
 @Liar(EntityHuman.class)
 public abstract class EntityHumanLiar extends EntityLiving {
@@ -58,7 +62,9 @@ public abstract class EntityHumanLiar extends EntityLiving {
                                 ItemStack itemStack = bn.b[i1];
                                 if (itemStack == null)
                                     continue;
-                                weakLevel += EnchantmentManager.getEnchantmentLevel(Curses.weak, itemStack);
+                                Optional<CurseLevel<WeakCurse>> optional= CurseManager.INSTANCE.getCurseFromItemStack(itemStack,Curses.weak);
+                                if(optional.isPresent())
+                                    weakLevel+=optional.get().level;
                             }
                             if (weakLevel > 0)
                                 WeakCurse.modifier((EntityHuman) (Object) this, weakLevel);

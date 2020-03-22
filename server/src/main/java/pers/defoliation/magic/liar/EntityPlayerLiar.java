@@ -4,12 +4,14 @@ import common.defoliation.mod.liar.EntityHumanLiar;
 import net.minecraft.*;
 import net.minecraft.server.MinecraftServer;
 import pers.defoliation.magic.curse.*;
+import pers.defoliation.magic.curse.Curse;
 import team.unknowndomain.liar.annotation.Deceive;
 import team.unknowndomain.liar.annotation.Liar;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 
 @Liar(EntityPlayer.class)
 public abstract class EntityPlayerLiar extends EntityHuman {
@@ -335,11 +337,8 @@ public abstract class EntityPlayerLiar extends EntityHuman {
     }
 
     public void tickPlayerInventory() {
-        //TODO 物品吃食物可以写这里
         boolean players_eyes_inside_water = a(Material.h);
         boolean steam_and_hiss = false;
-        //不保证这个list里的ItemStack的数量都为0以上或不为空
-        List<ItemStack> itemFoods = new ArrayList<>();
         List<ItemStack> gluttonyItems = new ArrayList<>();
         for (int i = 0; i < this.bn.a.length + this.bn.b.length; i++) {
             ItemStack item_stack = this.bn.getInventorySlotContents(i);
@@ -359,42 +358,41 @@ public abstract class EntityPlayerLiar extends EntityHuman {
 
 
                 if (item_stack.isEnchantable()) {
-                    if (EnchantmentManager.hasEnchantment(item_stack, Curses.pride)) {
-                        int level = EnchantmentManager.getEnchantmentLevel(Curses.pride, item_stack);
-                        if (!PrideCurse.canHold(level, ((EntityHumanLiar) (Object) getAsPlayer()).getPlayer().getLevel())) {
+                    if (CurseManager.INSTANCE.hasCurse(item_stack, Curses.pride)) {
+                        Optional<CurseLevel<PrideCurse>> curseFromItemStack = CurseManager.INSTANCE.getCurseFromItemStack(item_stack, Curses.pride);
+                        if (!PrideCurse.canHold(curseFromItemStack.get().level, ((EntityHumanLiar) (Object) getAsPlayer()).getPlayer().getLevel())) {
                             this.bn.a(i, null);
                             dropItemStack(item_stack, 1f);
                             continue;
                         }
                     }
-                    Curses.setEnchWork(item_stack, true);
+                    CurseUtil.setEnchantmentWork(item_stack, true);
                     boolean work = true;
-                    if (EnchantmentManager.hasEnchantment(item_stack, Curses.lygophobia)) {
+                    if (CurseManager.INSTANCE.hasCurse(item_stack, Curses.lygophobia)) {
                         work = LygophobiaCurse.modifier(this, item_stack);
                     }
-                    if (work && EnchantmentManager.hasEnchantment(item_stack, Curses.social)) {
+                    if (work && CurseManager.INSTANCE.hasCurse(item_stack, Curses.social)) {
                         work = SocialCurse.modifier(item_stack, this.bn.b);
                     }
-                    if (work && EnchantmentManager.hasEnchantment(item_stack, Curses.asocial)) {
+                    if (work && CurseManager.INSTANCE.hasCurse(item_stack, Curses.asocial)) {
                         work = AsocialCurse.modifier(item_stack, this.bn.b);
                     }
-                    if (work && EnchantmentManager.hasEnchantment(item_stack, Curses.sloth)) {
+                    if (work && CurseManager.INSTANCE.hasCurse(item_stack, Curses.sloth)) {
                         SlothCurse.modifier(item_stack);
                     }
 
-                    if (EnchantmentManager.hasEnchantment(item_stack, Curses.bloodthirsty))
+                    if (CurseManager.INSTANCE.hasCurse(item_stack, Curses.bloodthirsty))
                         BloodthirstyCurse.modifier(this, item_stack);
-                    if (EnchantmentManager.hasEnchantment(item_stack, Curses.gluttony))
+                    if (CurseManager.INSTANCE.hasCurse(item_stack, Curses.gluttony))
                         gluttonyItems.add(item_stack);
-                    if (EnchantmentManager.hasEnchantment(item_stack, Curses.envy))
+                    if (CurseManager.INSTANCE.hasCurse(item_stack, Curses.envy))
                         EnvyCurse.modifier(this, item_stack);
-                } else if (item instanceof ItemFood)
-                    itemFoods.add(item_stack);
+                }
             }
         }
 
         for (ItemStack gluttonyItem : gluttonyItems) {
-            GluttonyCurse.modifier(gluttonyItem, itemFoods);
+            GluttonyCurse.modifier(gluttonyItem, bn);
         }
 
         for (int i = 0; i < this.bn.a.length; i++) {
