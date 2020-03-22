@@ -39,7 +39,7 @@ public class CurseManager {
         return list;
     }
 
-    public Optional<CurseLevel> getCurseFromItemStack(ItemStack itemStack, Curse curse) {
+    public <T extends Curse> Optional<CurseLevel<T>> getCurseFromItemStack(ItemStack itemStack, T curse) {
         ItemStackWrapper itemStackWrapper = ItemStackWrapper.of(itemStack);
         NBTTagCompound nbtTagCompound = itemStackWrapper.getNBT();
         if (!nbtTagCompound.hasKey(CURSE))

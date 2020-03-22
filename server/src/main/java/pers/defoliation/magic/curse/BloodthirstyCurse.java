@@ -21,21 +21,23 @@ public class BloodthirstyCurse extends MagicCurse {
     }
 
     public static void modifier(EntityHuman entityHuman, ItemStack itemStack) {
-        int bloodthirstyLevel = EnchantmentManager.getEnchantmentLevel(Curses.bloodthirsty, itemStack);
-        if (bloodthirstyLevel <= 0)
-            return;
-        long second = DimensionManager.getWorld(0).I() / 20;
-        MITENBTTagCompound miteNBT = (MITENBTTagCompound) ItemStackWrapper.of(itemStack).getNBT();
-        if (!miteNBT.hasKey("bloodthirsty")) {
-            miteNBT.setLong("bloodthirsty", second);
-            return;
-        }
-        long l = miteNBT.getLong("bloodthirsty");
-        if (l > 7280 - 1320 * bloodthirstyLevel) {
-            entityHuman.g(2f);
-            miteNBT.setLong("bloodthirsty", second);
-            if (MITE.getMITE().isRemote())
-                ((EntityHumanLiar) (Object) entityHuman).getPlayer().sendMessage(LocaleI18n.a("message.bloodthirsty.damage",itemStack.s()));
-        }
+        CurseManager.INSTANCE.getCurseFromItemStack(itemStack,Curses.bloodthirsty).ifPresent(curseLevel -> {
+            int bloodthirstyLevel = curseLevel.level;
+            if (bloodthirstyLevel <= 0)
+                return;
+            long second = DimensionManager.getWorld(0).I() / 20;
+            MITENBTTagCompound miteNBT = (MITENBTTagCompound) ItemStackWrapper.of(itemStack).getNBT();
+            if (!miteNBT.hasKey("bloodthirsty")) {
+                miteNBT.setLong("bloodthirsty", second);
+                return;
+            }
+            long l = miteNBT.getLong("bloodthirsty");
+            if (l > 7280 - 1320 * bloodthirstyLevel) {
+                entityHuman.g(2f);
+                miteNBT.setLong("bloodthirsty", second);
+                if (MITE.getMITE().isRemote())
+                    ((EntityHumanLiar) (Object) entityHuman).getPlayer().sendMessage(LocaleI18n.a("message.bloodthirsty.damage",itemStack.s()));
+            }
+        });
     }
 }

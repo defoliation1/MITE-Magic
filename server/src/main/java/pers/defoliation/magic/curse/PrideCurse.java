@@ -7,7 +7,11 @@ import net.minecraft.EnchantmentManager;
 import net.minecraft.Item;
 import net.minecraft.ItemStack;
 
+import java.util.Optional;
+
 public class PrideCurse extends MagicCurse {
+
+    private final CurseManager curseManager = CurseManager.INSTANCE;
 
     public PrideCurse() {
         super("pride");
@@ -21,8 +25,9 @@ public class PrideCurse extends MagicCurse {
     @EventHandler
     public void onPickup(PlayerPickupItemEvent playerPickupItemEvent) {
         ItemStack itemStack = ((ItemStackWrapper) playerPickupItemEvent.getItem().getItemStack()).getHandler();
-        if (EnchantmentManager.hasEnchantment(itemStack, this)) {
-            int level = EnchantmentManager.getEnchantmentLevel(this, itemStack);
+        Optional<CurseLevel<PrideCurse>> curseLevel = curseManager.getCurseFromItemStack(itemStack,this);
+        if(curseLevel.isPresent()){
+            int level = curseLevel.get().level;
             int needLevel = 20 + 10 * level;
             playerPickupItemEvent.setCancelled(!canHold(level,needLevel));
         }

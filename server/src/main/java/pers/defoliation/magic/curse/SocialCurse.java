@@ -12,14 +12,14 @@ public class SocialCurse extends MagicCurse {
 
     public static boolean modifier(ItemStack itemStack, ItemStack[] itemStacks) {
         boolean work = true;
-        for(int i =0;i<4;i++){
-            if(itemStacks[i]==null){
+        for (int i = 0; i < 4; i++) {
+            if (itemStacks[i] == null) {
                 work = false;
                 break;
             }
         }
-        if(!work)
-            Curses.setEnchWork(itemStack, false);
+        if (!work)
+            CurseUtil.setEnchantmentWork(itemStack, false);
         return work;
     }
 
