@@ -50,6 +50,15 @@ public class CurseManager {
         return Optional.of(new CurseLevel(curse, curseCompound.getInt(curse.getName())));
     }
 
+    public boolean hasCurse(ItemStack itemStack,Curse curse){
+        ItemStackWrapper itemStackWrapper = ItemStackWrapper.of(itemStack);
+        NBTTagCompound nbtTagCompound = itemStackWrapper.getNBT();
+        if (!nbtTagCompound.hasKey(CURSE))
+            return false;
+        NBTTagCompound curseCompound = nbtTagCompound.getCompound(CURSE);
+        return curseCompound.hasKey(curse.getName());
+    }
+
     public void applyCurse(ItemStack itemStack, Curse curse, int level) {
         applyCurse(itemStack, new CurseLevel(curse, level));
     }
