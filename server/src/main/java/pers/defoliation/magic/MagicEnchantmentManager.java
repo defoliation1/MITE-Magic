@@ -1,4 +1,4 @@
-package pers.defoliation.magic.curse;
+package pers.defoliation.magic;
 
 import common.defoliation.Location;
 import common.defoliation.MITE;
@@ -8,8 +8,6 @@ import common.defoliation.event.block.BlockPlaceEvent;
 import common.defoliation.mod.mite.MITEWorld;
 import it.unimi.dsi.fastutil.longs.Long2BooleanOpenHashMap;
 import net.minecraft.*;
-import pers.defoliation.magic.Chunk2LongUtil;
-import pers.defoliation.magic.Main;
 import pers.defoliation.magic.block.Blocks;
 
 import java.util.Random;

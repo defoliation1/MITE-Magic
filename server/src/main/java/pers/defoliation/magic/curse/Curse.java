@@ -11,6 +11,8 @@ public interface Curse {
 
     boolean canCurse(Item item);
 
+    int getMaxLevel();
+
     int getProbability(ItemStack itemStack,int enchantLevel);
 
 }

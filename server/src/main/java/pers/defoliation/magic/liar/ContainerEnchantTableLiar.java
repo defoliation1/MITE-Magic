@@ -3,7 +3,8 @@ package pers.defoliation.magic.liar;
 import common.defoliation.Location;
 import common.defoliation.mod.liar.WorldLiar;
 import net.minecraft.*;
-import pers.defoliation.magic.curse.MagicEnchantmentManager;
+import pers.defoliation.magic.MagicEnchantmentManager;
+import pers.defoliation.magic.curse.CurseManager;
 import team.unknowndomain.liar.annotation.Deceive;
 import team.unknowndomain.liar.annotation.Liar;
 
@@ -25,14 +26,12 @@ public abstract class ContainerEnchantTableLiar extends Container {
         super(player);
     }
 
-    public int getNumAccessibleBookshelves()
-    {
-        return MagicEnchantmentManager.getAccessibleBookshelves(new Location( ((WorldLiar)(Object)world).getWorld(),i,j,k),24);
+    public int getNumAccessibleBookshelves() {
+        return MagicEnchantmentManager.getAccessibleBookshelves(new Location(((WorldLiar) (Object) world).getWorld(), i, j, k), 24);
     }
 
-    public int calcEnchantmentLevelsForSlot(Random random, int slot_index, int num_accessible_bookshelves, ItemStack item_stack)
-    {
-        return MagicEnchantmentManager.calcEnchantmentLevelsForSlot(new Location( ((WorldLiar)(Object)world).getWorld(),i,j,k),slot_index,num_accessible_bookshelves,item_stack);
+    public int calcEnchantmentLevelsForSlot(Random random, int slot_index, int num_accessible_bookshelves, ItemStack item_stack) {
+        return MagicEnchantmentManager.calcEnchantmentLevelsForSlot(new Location(((WorldLiar) (Object) world).getWorld(), i, j, k), slot_index, num_accessible_bookshelves, item_stack);
     }
 
     public boolean a(final EntityHuman par1EntityPlayer, final int par2) {
@@ -58,12 +57,14 @@ public abstract class ContainerEnchantTableLiar extends Container {
                         if (!var5 || var7 == var6) {
                             if (var5) {
                                 Item.bY.a(var3, var8);
-                            }
-                            else {
+                            } else {
                                 var3.a(var8.b, var8.c);
                             }
                         }
                     }
+                    Block enchantment_table_block = this.world.getBlock(this.i, this.j, this.k);
+                    int antiCurseLevel = enchantment_table_block == Block.enchantmentTableEmerald ? 1500 : 2000;
+                    CurseManager.INSTANCE.randomApplyCurse(var3, experience_cost, antiCurseLevel);
                     this.a(0).f();
                 }
             }

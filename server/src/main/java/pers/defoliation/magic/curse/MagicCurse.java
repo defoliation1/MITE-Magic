@@ -21,6 +21,12 @@ public abstract class MagicCurse implements Curse{
         return LocaleI18n.a("curse."+getName());
     }
 
+    /**
+     * 控制添加到物品上的概率
+     * @param itemStack 附魔完毕，正在添加诅咒的物品
+     * @param enchantLevel 附魔时选择的经验
+     * @return 这个诅咒在附魔时添加到物品上的概率
+     */
     @Override
     public int getProbability(ItemStack itemStack, int enchantLevel) {
         return 10;
@@ -30,4 +36,8 @@ public abstract class MagicCurse implements Curse{
         return new CurseLevel(this,level);
     }
 
+    @Override
+    public int getMaxLevel() {
+        return 4;
+    }
 }
