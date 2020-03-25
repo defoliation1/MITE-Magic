@@ -11,10 +11,11 @@ import net.minecraft.*;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
 import pers.defoliation.magic.block.MagicMetalBlock;
 import pers.defoliation.magic.block.tile.MagicAnvilTileEntity;
+import pers.defoliation.magic.curse.CurseManager;
 import pers.defoliation.magic.item.Items;
 
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
+import java.util.function.Consumer;
 
 public class MagicAnvilContainer extends Container implements InventoryView {
 
@@ -34,7 +35,7 @@ public class MagicAnvilContainer extends Container implements InventoryView {
             public boolean a(ItemStack par1ItemStack) {
                 NBTTagList stored_enchantments = par1ItemStack.r();
                 if (stored_enchantments != null
-                        && (EnchantmentManager.hasValidEnchantmentForItem(stored_enchantments, par1ItemStack.b()))
+                        && !stored_enchantments.a.isEmpty()
                         && par1ItemStack.b() != Item.bY)
                     return true;
                 return false;
@@ -200,19 +201,22 @@ public class MagicAnvilContainer extends Container implements InventoryView {
     }
 
     private boolean updateEnchantment(ItemStack itemStack, int addLevel) {
+        List<Consumer> updaterList = new ArrayList<>();
         Map map = EnchantmentManager.getEnchantmentsMap(itemStack);
-        Object[] idsWithOutNonLevels = map.keySet()
-                .stream()
-                .filter(o -> Enchantment.b[(int) o].hasLevels())
-                .toArray();
-        if (idsWithOutNonLevels.length == 0)
+        map.keySet().forEach(o -> updaterList.add(level -> {
+            Map cloneMap = new HashMap(map);
+            cloneMap.put(o, (int) cloneMap.get(o) + addLevel);
+            EnchantmentManager.a(map, itemStack);
+        }));
+        CurseManager.INSTANCE.getCursesFromItemStack(itemStack).forEach(curseLevel ->
+                updaterList.add(level ->
+                        CurseManager.INSTANCE.applyCurse(itemStack, curseLevel.curse, curseLevel.level + addLevel))
+        );
+        if (updaterList.isEmpty())
             return false;
-        int randomId = (int) idsWithOutNonLevels[random.nextInt(idsWithOutNonLevels.length)];
-        map.put(randomId, ((int) map.get(randomId)) + addLevel);
-        EnchantmentManager.a(map, itemStack);
+        updaterList.get(random.nextInt(updaterList.size())).accept(addLevel);
         return true;
     }
-
 
     public void onUpdate() {
         if ((player instanceof EntityOtherPlayerMP)) {

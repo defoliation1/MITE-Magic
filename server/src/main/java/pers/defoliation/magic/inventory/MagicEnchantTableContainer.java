@@ -10,6 +10,9 @@ import common.defoliation.mod.mite.inventory.SimpleInventory;
 import net.minecraft.*;
 import pers.defoliation.magic.MagicEnchantmentManager;
 import pers.defoliation.magic.Main;
+import pers.defoliation.magic.curse.CurseManager;
+
+import java.util.List;
 
 public class MagicEnchantTableContainer extends Container implements InventoryView {
 
@@ -90,44 +93,45 @@ public class MagicEnchantTableContainer extends Container implements InventoryVi
     //确认附魔，par2为选项
     @Override
     public boolean a(final EntityHuman par1EntityPlayer, final int par2) {
-//        final ItemStack var3 = this.a.a(0);
-//        final int experience_cost = Enchantment.getExperienceCost(this.g[par2]);
-//        if (this.g[par2] > 0 && var3 != null && (par1EntityPlayer.bJ >= experience_cost || par1EntityPlayer.bG.d)) {
-//            if (!this.world.I) {
-//                if (ItemPotion.isBottleOfWater(var3)) {
-//                    par1EntityPlayer.s(-experience_cost);
-//                    this.a.a(0, new ItemStack(Item.bF));
-//                    return true;
-//                }
-//                if (ItemGoldenApple.isUnenchantedGoldenApple(var3)) {
-//                    par1EntityPlayer.s(-experience_cost);
-//                    this.a.a(0, new ItemStack(Item.av, 1, 1));
-//                    return true;
-//                }
-//                final List var4 = EnchantmentManager.b(this.l, var3, this.g[par2]);
-//                final boolean var5 = var3.d == Item.aN.cv;
-//                if (var4 != null) {
-//                    par1EntityPlayer.s(-experience_cost);
-//                    if (var5) {
-//                        var3.d = Item.bY.cv;
-//                    }
-//                    final int var6 = var5 ? this.l.nextInt(var4.size()) : -1;
-//                    for (int var7 = 0; var7 < var4.size(); ++var7) {
-//                        final EnchantmentInstance var8 = var4.get(var7);
-//                        if (!var5 || var7 == var6) {
-//                            if (var5) {
-//                                Item.bY.a(var3, var8);
-//                            }
-//                            else {
-//                                var3.a(var8.b, var8.c);
-//                            }
-//                        }
-//                    }
-//                    this.a(0).f();
-//                }
-//            }
-//            return true;
-//        }
+        final ItemStack var3 = this.simpleInventory.a(0);
+        final int experience_cost = Enchantment.getExperienceCost(this.cost[par2]);
+        if (this.cost[par2] > 0 && var3 != null && (par1EntityPlayer.bJ >= experience_cost || par1EntityPlayer.bG.d)) {
+            if (!this.world.I) {
+                if (ItemPotion.isBottleOfWater(var3)) {
+                    par1EntityPlayer.s(-experience_cost);
+                    this.simpleInventory.a(0, new ItemStack(Item.bF));
+                    return true;
+                }
+                if (ItemGoldenApple.isUnenchantedGoldenApple(var3)) {
+                    par1EntityPlayer.s(-experience_cost);
+                    this.simpleInventory.a(0, new ItemStack(Item.av, 1, 1));
+                    return true;
+                }
+                final List var4 = EnchantmentManager.b(Main.random, var3, this.cost[par2]);
+                final boolean var5 = var3.d == Item.aN.cv;
+                if (var4 != null) {
+                    par1EntityPlayer.s(-experience_cost);
+                    if (var5) {
+                        var3.d = Item.bY.cv;
+                    }
+                    final int var6 = var5 ? Main.random.nextInt(var4.size()) : -1;
+                    for (int var7 = 0; var7 < var4.size(); ++var7) {
+                        final EnchantmentInstance var8 = (EnchantmentInstance) var4.get(var7);
+                        if (!var5 || var7 == var6) {
+                            if (var5) {
+                                Item.bY.a(var3, var8);
+                            }
+                            else {
+                                var3.a(var8.b, var8.c);
+                            }
+                        }
+                    }
+                    CurseManager.INSTANCE.randomApplyCurse(var3, experience_cost, 3000);
+                    this.a(0).f();
+                }
+            }
+            return true;
+        }
         return false;
     }
 

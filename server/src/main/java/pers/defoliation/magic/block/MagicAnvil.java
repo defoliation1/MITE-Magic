@@ -31,6 +31,7 @@ public class MagicAnvil extends BlockAnvil {
     public TileEntity b(World world) {
         return new MagicAnvilTileEntity();
     }
+
     public boolean onBlockActivated(World world, int x, int y, int z, EntityHuman player, EnumFace face, float offset_x, float offset_y, float offset_z)
     {
         if (!world.isAirOrPassableBlock(x, y + 1, z, false)) {
