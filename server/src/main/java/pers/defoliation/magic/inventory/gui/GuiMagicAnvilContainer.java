@@ -46,17 +46,16 @@ public class GuiMagicAnvilContainer extends GuiContainer implements InventoryVie
 
     @Override
     public Inventory getTopInventory() {
-        return null;
+        return magicAnvilContainer.getTopInventory();
     }
 
     @Override
     public Inventory getBottomInventory() {
-        return null;
+        return magicAnvilContainer.getBottomInventory();
     }
 
     @Override
     public PlayerEntity getPlayer() {
-//        return e.player);
-        return null;
+        return magicAnvilContainer.getPlayer();
     }
 }

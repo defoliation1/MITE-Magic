@@ -9,10 +9,12 @@ import common.defoliation.mod.mite.inventory.GuiRegister;
 import net.minecraft.EntityHuman;
 import pers.defoliation.magic.Main;
 import pers.defoliation.magic.inventory.gui.GuiMagicAnvilContainer;
+import pers.defoliation.magic.inventory.gui.GuiMagicEnchantment;
 
 public class BaseGuiHandler implements GuiHandler {
 
     public static final int MAGIC_ANVIL = 1;
+    public static final int MAGIC_ENCHANT_TABLE = 2;
 
     public BaseGuiHandler() {
         GuiRegister.INSTANCE.register(Main.mod, this);
@@ -24,6 +26,9 @@ public class BaseGuiHandler implements GuiHandler {
             case MAGIC_ANVIL: {
                 return new MagicAnvilContainer(((MITEPlayerEntity)playerEntity).getHandle(), location);
             }
+            case MAGIC_ENCHANT_TABLE:{
+                return new MagicEnchantTableContainer(((MITEPlayerEntity)playerEntity).getHandle(),location);
+            }
         }
         return null;
     }
@@ -33,6 +38,9 @@ public class BaseGuiHandler implements GuiHandler {
         switch (i) {
             case MAGIC_ANVIL: {
                 return new GuiMagicAnvilContainer(new MagicAnvilContainer(((MITEPlayerEntity)playerEntity).getHandle(), location));
+            }
+            case MAGIC_ENCHANT_TABLE:{
+                return new GuiMagicEnchantment(new MagicEnchantTableContainer(((MITEPlayerEntity)playerEntity).getHandle(),location));
             }
         }
         return null;
