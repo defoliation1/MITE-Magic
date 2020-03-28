@@ -10,6 +10,7 @@ import common.defoliation.mod.mite.inventory.SimpleInventory;
 import net.minecraft.*;
 import pers.defoliation.magic.MagicEnchantmentManager;
 import pers.defoliation.magic.Main;
+import pers.defoliation.magic.block.MagicEnchantTable;
 import pers.defoliation.magic.curse.CurseManager;
 
 import java.util.List;
@@ -163,6 +164,6 @@ public class MagicEnchantTableContainer extends Container implements InventoryVi
 
     @Override
     public boolean a(EntityHuman entityHuman) {
-        return world.getBlock(location.getBlockX(), location.getBlockY(), location.getBlockZ()) instanceof BlockEnchantmentTable;
+        return world.getBlock(location.getBlockX(), location.getBlockY(), location.getBlockZ()) instanceof MagicEnchantTable;
     }
 }

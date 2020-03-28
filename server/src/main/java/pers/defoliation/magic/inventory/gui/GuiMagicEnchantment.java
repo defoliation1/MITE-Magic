@@ -1,6 +1,5 @@
 package pers.defoliation.magic.inventory.gui;
 
-import common.defoliation.Location;
 import common.defoliation.entity.PlayerEntity;
 import common.defoliation.inventory.Inventory;
 import common.defoliation.inventory.InventoryView;
@@ -19,7 +18,7 @@ import java.util.List;
 
 public class GuiMagicEnchantment extends GuiContainer implements InventoryView {
 
-    private static final ResourceLocation gui = new ResourceLocation("textures/gui/container/enchanting_table.png");
+    private static final ResourceLocation gui = new ResourceLocation("magic:textures/gui/container/enchanting_table.png");
     private MagicEnchantTableContainer container;
     public int t;
     public float u;
