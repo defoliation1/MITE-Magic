@@ -25,7 +25,6 @@ public class MagicAnvilContainer extends Container implements InventoryView {
 
     public int cost;
 
-    private ItemStack result;
 
     public MagicAnvilContainer(EntityHuman player, Location location) {
         super(player);
@@ -142,7 +141,6 @@ public class MagicAnvilContainer extends Container implements InventoryView {
         ItemStack firstItems = simpleInventory.a(0);
         if (firstItems == null) {
             simpleInventory.a(2, null);
-            result = null;
             return;
         }
 
@@ -150,14 +148,12 @@ public class MagicAnvilContainer extends Container implements InventoryView {
 
         if (secondItem == null) {
             simpleInventory.a(2, null);
-            result = null;
             return;
         }
 
         Map map = EnchantmentManager.getEnchantmentsMap(firstItems);
 
         if (map.isEmpty()) {
-            result = null;
             return;
         }
         ItemStack cloneItems = firstItems.m();
@@ -174,11 +170,11 @@ public class MagicAnvilContainer extends Container implements InventoryView {
             cost += enchantment.difficulty * modifierLevel * modifierLevel * numModifier;
         }
 
-        cost = (int) cost;
+        this.cost = (int) cost;
 
-        if (cost > player.bJ) {
+        if (this.cost > player.bJ) {
             //TODO 拒绝
-            result = null;
+            simpleInventory.a(2, null);
             return;
         }
 
