@@ -11,7 +11,7 @@ import pers.defoliation.magic.inventory.MagicAnvilContainer;
 
 public class GuiMagicAnvilContainer extends GuiContainer implements InventoryView {
 
-    private static final ResourceLocation gui = new ResourceLocation("textures/gui/container/anvil.png");
+    private static final ResourceLocation gui = new ResourceLocation("magic:textures/gui/container/magic_anvil.png");
 
     private MagicAnvilContainer magicAnvilContainer;
 

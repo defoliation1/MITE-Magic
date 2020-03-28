@@ -39,28 +39,24 @@ public class MagicEnchantTableContainer extends Container implements InventoryVi
         }
     }
 
-    public void a(ICrafting par1ICrafting)
-    {
+    public void a(ICrafting par1ICrafting) {
         super.a(par1ICrafting);
         par1ICrafting.a(this, 0, this.cost[0]);
         par1ICrafting.a(this, 1, this.cost[1]);
         par1ICrafting.a(this, 2, this.cost[2]);
     }
 
-    public void b()
-    {
+    public void b() {
         super.b();
-        for (int var1 = 0; var1 < this.e.size(); var1++)
-        {
-            ICrafting var2 = (ICrafting)this.e.get(var1);
+        for (int var1 = 0; var1 < this.e.size(); var1++) {
+            ICrafting var2 = (ICrafting) this.e.get(var1);
             var2.a(this, 0, this.cost[0]);
             var2.a(this, 1, this.cost[1]);
             var2.a(this, 2, this.cost[2]);
         }
     }
 
-    public void b(int par1, int par2)
-    {
+    public void b(int par1, int par2) {
         if ((par1 >= 0) && (par1 <= 2)) {
             this.cost[par1] = par2;
         } else {
@@ -75,14 +71,13 @@ public class MagicEnchantTableContainer extends Container implements InventoryVi
             if (var2 != null && var2.isEnchantable()) {
                 this.f = Main.random.nextLong();
                 if (!this.world.I) {
-                    final int num_accessible_bookshelves = MagicEnchantmentManager.getAccessibleBookshelves(location,48);
+                    final int num_accessible_bookshelves = MagicEnchantmentManager.getAccessibleBookshelves(location, 48);
                     for (int slot_index = 0; slot_index < 3; ++slot_index) {
-                        this.cost[slot_index] = MagicEnchantmentManager.calcEnchantmentLevelsForSlot(location,slot_index, num_accessible_bookshelves, var2);
+                        this.cost[slot_index] = MagicEnchantmentManager.calcEnchantmentLevelsForSlot(location, slot_index, num_accessible_bookshelves, var2);
                     }
                     this.b();
                 }
-            }
-            else {
+            } else {
                 for (int var3 = 0; var3 < 3; ++var3) {
                     this.cost[var3] = 0;
                 }
@@ -120,8 +115,7 @@ public class MagicEnchantTableContainer extends Container implements InventoryVi
                         if (!var5 || var7 == var6) {
                             if (var5) {
                                 Item.bY.a(var3, var8);
-                            }
-                            else {
+                            } else {
                                 var3.a(var8.b, var8.c);
                             }
                         }
@@ -169,6 +163,6 @@ public class MagicEnchantTableContainer extends Container implements InventoryVi
 
     @Override
     public boolean a(EntityHuman entityHuman) {
-        return false;
+        return world.getBlock(location.getBlockX(), location.getBlockY(), location.getBlockZ()) instanceof BlockEnchantmentTable;
     }
 }

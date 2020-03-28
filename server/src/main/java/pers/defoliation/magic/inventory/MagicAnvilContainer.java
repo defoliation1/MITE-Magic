@@ -9,7 +9,7 @@ import common.defoliation.mod.mite.inventory.MITEInventory;
 import common.defoliation.mod.mite.inventory.SimpleInventory;
 import net.minecraft.*;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
-import pers.defoliation.magic.block.MagicMetalBlock;
+import pers.defoliation.magic.block.MagicAnvil;
 import pers.defoliation.magic.block.tile.MagicAnvilTileEntity;
 import pers.defoliation.magic.curse.CurseManager;
 import pers.defoliation.magic.item.Items;
@@ -94,7 +94,7 @@ public class MagicAnvilContainer extends Container implements InventoryView {
     @Override
     public boolean a(EntityHuman entityHuman) {
         //时时检测这个container是否能打开
-        if (((world.getBlock(location.getBlockX(), location.getBlockY(), location.getBlockZ()) instanceof MagicMetalBlock))
+        if (((world.getBlock(location.getBlockX(), location.getBlockY(), location.getBlockZ()) instanceof MagicAnvil))
                 && ((world.r(location.getBlockX(), location.getBlockY(), location.getBlockZ()) instanceof MagicAnvilTileEntity))
         ) {
             return entityHuman.e(location.getBlockX() + 0.5D, location.getBlockY() + 0.5D, location.getBlockZ() + 0.5D) <= 64.0D;
