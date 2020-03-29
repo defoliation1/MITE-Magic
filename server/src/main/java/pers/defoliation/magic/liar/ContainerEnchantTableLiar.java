@@ -63,7 +63,7 @@ public abstract class ContainerEnchantTableLiar extends Container {
                         }
                     }
                     Block enchantment_table_block = this.world.getBlock(this.i, this.j, this.k);
-                    int antiCurseLevel = enchantment_table_block == Block.enchantmentTableEmerald ? 1500 : 2000;
+                    int antiCurseLevel = enchantment_table_block == Block.enchantmentTableEmerald ? 2500 : 2000;
                     CurseManager.INSTANCE.randomApplyCurse(var3, experience_cost, antiCurseLevel);
                     this.a(0).f();
                 }
