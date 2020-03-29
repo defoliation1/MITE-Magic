@@ -146,7 +146,7 @@ public class MagicAnvilContainer extends Container implements InventoryView {
             return;
         }
 
-        if(computeItem!=firstItems){
+        if (computeItem != firstItems) {
             Map map = EnchantmentManager.getEnchantmentsMap(firstItems);
 
             if (map.isEmpty()) {
@@ -203,15 +203,20 @@ public class MagicAnvilContainer extends Container implements InventoryView {
 
     private boolean updateEnchantment(ItemStack itemStack, int addLevel) {
         List<Consumer<Integer>> updaterList = new ArrayList<>();
-        Map map = EnchantmentManager.getEnchantmentsMap(itemStack);
-        map.keySet().forEach(o -> updaterList.add(level -> {
-            map.put(o, (int) map.get(o) + level);
-            EnchantmentManager.a(map, itemStack);
-        }));
-        CurseManager.INSTANCE.getCursesFromItemStack(itemStack).forEach(curseLevel ->
-                updaterList.add(level ->
-                        CurseManager.INSTANCE.applyCurse(itemStack, curseLevel.curse, curseLevel.level + level))
-        );
+        Map<Integer, Integer> map = EnchantmentManager.getEnchantmentsMap(itemStack);
+        map.entrySet()
+                .stream()
+                .filter(entry -> Enchantment.get(entry.getKey()).hasLevels() && entry.getValue() < 10)
+                .forEach(entry -> updaterList.add(level -> {
+                    map.put(entry.getKey(), entry.getValue() + level);
+                    EnchantmentManager.a(map, itemStack);
+                }));
+        CurseManager.INSTANCE.getCursesFromItemStack(itemStack).stream()
+                .filter(curseLevel -> curseLevel.level < curseLevel.curse.getMaxLevel())
+                .forEach(curseLevel ->
+                        updaterList.add(level ->
+                                CurseManager.INSTANCE.applyCurse(itemStack, curseLevel.curse, curseLevel.level + level))
+                );
         if (updaterList.isEmpty())
             return false;
         updaterList.get(random.nextInt(updaterList.size())).accept(addLevel);
