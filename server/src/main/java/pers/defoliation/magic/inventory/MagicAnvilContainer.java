@@ -25,6 +25,7 @@ public class MagicAnvilContainer extends Container implements InventoryView {
 
     public int cost;
 
+    private ItemStack computeItem;
 
     public MagicAnvilContainer(EntityHuman player, Location location) {
         super(player);
@@ -141,39 +142,42 @@ public class MagicAnvilContainer extends Container implements InventoryView {
         ItemStack firstItems = simpleInventory.a(0);
         if (firstItems == null) {
             simpleInventory.a(2, null);
+            cost = 0;
+            return;
+        }
+
+        if(computeItem!=firstItems){
+            Map map = EnchantmentManager.getEnchantmentsMap(firstItems);
+
+            if (map.isEmpty()) {
+                return;
+            }
+
+            double cost = 1000;
+
+            double numModifier = (1d / -((double) map.size())) + 2d;
+
+            for (Object o : map.keySet()) {
+                int id = (int) o;
+                Enchantment enchantment = Enchantment.b[id];
+                int level = (int) map.get(id);
+                int modifierLevel = level * 10;
+                cost += enchantment.difficulty * modifierLevel * modifierLevel * numModifier;
+            }
+
+            this.cost = (int) cost;
+            computeItem = firstItems;
+        }
+
+        if (this.cost > player.bJ) {
+            //TODO 拒绝
+            simpleInventory.a(2, null);
             return;
         }
 
         ItemStack secondItem = simpleInventory.a(1);
 
         if (secondItem == null) {
-            simpleInventory.a(2, null);
-            return;
-        }
-
-        Map map = EnchantmentManager.getEnchantmentsMap(firstItems);
-
-        if (map.isEmpty()) {
-            return;
-        }
-        ItemStack cloneItems = firstItems.m();
-
-        double cost = 1000;
-
-        double numModifier = (1d / -((double) map.size())) + 2d;
-
-        for (Object o : map.keySet()) {
-            int id = (int) o;
-            Enchantment enchantment = Enchantment.b[id];
-            int level = (int) map.get(id);
-            int modifierLevel = level * 10;
-            cost += enchantment.difficulty * modifierLevel * modifierLevel * numModifier;
-        }
-
-        this.cost = (int) cost;
-
-        if (this.cost > player.bJ) {
-            //TODO 拒绝
             simpleInventory.a(2, null);
             return;
         }
@@ -192,21 +196,21 @@ public class MagicAnvilContainer extends Container implements InventoryView {
 //                result = cloneItems;
 //            }
 //        }
+        ItemStack cloneItems = firstItems.m();
         if (updateEnchantment(cloneItems, 1))
             simpleInventory.a(2, cloneItems);
     }
 
     private boolean updateEnchantment(ItemStack itemStack, int addLevel) {
-        List<Consumer> updaterList = new ArrayList<>();
+        List<Consumer<Integer>> updaterList = new ArrayList<>();
         Map map = EnchantmentManager.getEnchantmentsMap(itemStack);
         map.keySet().forEach(o -> updaterList.add(level -> {
-            Map cloneMap = new HashMap(map);
-            cloneMap.put(o, (int) cloneMap.get(o) + addLevel);
+            map.put(o, (int) map.get(o) + level);
             EnchantmentManager.a(map, itemStack);
         }));
         CurseManager.INSTANCE.getCursesFromItemStack(itemStack).forEach(curseLevel ->
                 updaterList.add(level ->
-                        CurseManager.INSTANCE.applyCurse(itemStack, curseLevel.curse, curseLevel.level + addLevel))
+                        CurseManager.INSTANCE.applyCurse(itemStack, curseLevel.curse, curseLevel.level + level))
         );
         if (updaterList.isEmpty())
             return false;
