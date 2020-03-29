@@ -3,11 +3,13 @@ package pers.defoliation.magic.curse;
 import common.defoliation.mod.mite.inventory.ItemStackWrapper;
 import common.defoliation.mod.mite.nbt.MITENBTTagCompound;
 import common.defoliation.nbt.NBTTagCompound;
+import net.minecraft.EnchantmentManager;
 import net.minecraft.Item;
 import net.minecraft.ItemStack;
 import pers.defoliation.magic.Main;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class CurseManager {
 
@@ -87,10 +89,17 @@ public class CurseManager {
         if (curseNum <= 0)
             return;
         List<Curse> curses = getApplicableCurse(itemStack.b());
-        if(curses.isEmpty())
+        if (curses.isEmpty())
             return;
-        for(int i=0;i<curseNum;i++){
-            if(curses.isEmpty())
+
+        int enchantLevel = Math.max(EnchantmentManager.getEnchantmentsMap(itemStack).values().stream().mapToInt(o -> (int) o).sum(), 1);
+
+        double d = enchantLevel / (enchantTableAntiCurseLevel / 1000d);
+
+        int curseLevels = (int) Math.max(d, 1d);
+
+        for (int i = 0; i < curseNum; i++) {
+            if (curses.isEmpty() || curseLevels <= 0)
                 return;
             TreeMap<Double, Curse> weightMap = new TreeMap<>();
 
@@ -101,13 +110,13 @@ public class CurseManager {
 
             double random = weightMap.lastKey() * Main.random.nextDouble();
 
-            SortedMap<Double,Curse> map = weightMap.tailMap(random,false);
+            SortedMap<Double, Curse> map = weightMap.tailMap(random, false);
             Curse curse = weightMap.get(map.firstKey());
             curses.remove(curse);
 
-            int level = Main.random.nextInt(curse.getMaxLevel())+1;
-
-            applyCurse(itemStack,curse,level);
+            int level = Main.random.nextInt(Math.min(curse.getMaxLevel(),curseLevels)) + 1;
+            curseLevels-=level;
+            applyCurse(itemStack, curse, level);
         }
     }
 
@@ -116,7 +125,7 @@ public class CurseManager {
         while (enchantLevel != 0) {
             if (enchantLevel >= antiLevel) {
                 enchantLevel -= antiLevel;
-                if (antiLevel >= Main.random.nextInt(antiLevel + ((antiLevel+num*(antiLevel)) / 2)))
+                if (antiLevel >= Main.random.nextInt(antiLevel + ((antiLevel + num * (antiLevel)) / 2)))
                     num++;
             } else {
                 if (enchantLevel >= Main.random.nextInt(antiLevel + antiLevel / 2))
