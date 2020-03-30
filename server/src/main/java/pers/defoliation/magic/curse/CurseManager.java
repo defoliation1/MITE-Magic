@@ -1,5 +1,6 @@
 package pers.defoliation.magic.curse;
 
+import common.defoliation.MITE;
 import common.defoliation.mod.mite.inventory.ItemStackWrapper;
 import common.defoliation.mod.mite.nbt.MITENBTTagCompound;
 import common.defoliation.nbt.NBTTagCompound;
@@ -9,7 +10,6 @@ import net.minecraft.ItemStack;
 import pers.defoliation.magic.Main;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class CurseManager {
 
@@ -97,7 +97,6 @@ public class CurseManager {
         double d = enchantLevel / (enchantTableAntiCurseLevel / 1000d);
 
         int curseLevels = (int) Math.max(d, 1d);
-
         for (int i = 0; i < curseNum; i++) {
             if (curses.isEmpty() || curseLevels <= 0)
                 return;
@@ -114,13 +113,13 @@ public class CurseManager {
             Curse curse = weightMap.get(map.firstKey());
             curses.remove(curse);
 
-            int level = Main.random.nextInt(Math.min(curse.getMaxLevel(),curseLevels)) + 1;
-            curseLevels-=level;
+            int level = Main.random.nextInt(Math.min(curse.getMaxLevel(), curseLevels)) + 1;
+            curseLevels -= level;
             applyCurse(itemStack, curse, level);
         }
     }
 
-    private int getCurseNum(int enchantLevel, int antiLevel) {
+    private static int getCurseNum(int enchantLevel, int antiLevel) {
         int num = 0;
         while (enchantLevel != 0) {
             if (enchantLevel >= antiLevel) {
