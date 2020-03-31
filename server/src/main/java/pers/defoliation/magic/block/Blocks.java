@@ -2,6 +2,7 @@ package pers.defoliation.magic.block;
 
 import net.minecraft.EnumDirection;
 import net.minecraft.Item;
+import net.minecraft.ItemAnvil;
 import net.minecraft.ItemBlock;
 import pers.defoliation.magic.item.Items;
 
@@ -34,6 +35,6 @@ public class Blocks {
         Item.g[magicMetalBlock.cF] = new ItemBlock(magicMetalBlock);
         Item.g[magicEnchantingTable.cF] = new ItemBlock(magicEnchantingTable);
         Item.g[magicBookshelf.cF] = new ItemBlock(magicBookshelf);
-        Item.g[magicAnvil.cF] = new ItemBlock(magicAnvil);
+        Item.g[magicAnvil.cF] = new ItemAnvil(magicAnvil);
     }
 }
