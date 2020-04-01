@@ -1,12 +1,12 @@
 package pers.defoliation.magic.curse;
 
 import common.defoliation.MITE;
+import common.defoliation.event.EventHandler;
+import common.defoliation.mod.mite.event.CreativeTabAddItemEvent;
 import common.defoliation.mod.mite.inventory.ItemStackWrapper;
 import common.defoliation.mod.mite.nbt.MITENBTTagCompound;
 import common.defoliation.nbt.NBTTagCompound;
-import net.minecraft.EnchantmentManager;
-import net.minecraft.Item;
-import net.minecraft.ItemStack;
+import net.minecraft.*;
 import pers.defoliation.magic.Main;
 
 import java.util.*;
@@ -17,6 +17,21 @@ public class CurseManager {
     private static final String CURSE = "curse";
 
     private HashMap<String, Curse> curseMap = new HashMap<>();
+
+    public CurseManager() {
+        MITE.getMITE().registerEventHandler(Main.mod, this);
+    }
+
+    @EventHandler
+    public void onCreativeItemAdd(CreativeTabAddItemEvent event) {
+        if (event.creativeModeTab == CreativeModeTab.i) {
+            getCurses().forEach(curse -> {
+                ItemStack itemStack = new ItemStack(Item.bY);
+                applyCurse(itemStack, curse, 1);
+                event.list.add(itemStack);
+            });
+        }
+    }
 
     public void registerCurse(Curse curse) {
         if (curseMap.containsKey(curse.getName()))

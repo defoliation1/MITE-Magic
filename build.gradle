@@ -3,7 +3,7 @@ subprojects {
     apply plugin: 'maven'
 
     group 'pers.defoliation'
-    version '1.0.2-SNAPSHOT'
+    version '1.0.3-SNAPSHOT'
 
     sourceCompatibility = targetCompatibility = 1.8
 

@@ -18,7 +18,13 @@ import java.util.List;
 public class MagicEnchantTableContainer extends Container implements InventoryView {
 
     private Location location;
-    private SimpleInventory simpleInventory = new SimpleInventory(1);
+    private SimpleInventory simpleInventory = new SimpleInventory(1){
+        public void e()
+        {
+            super.e();
+            MagicEnchantTableContainer.this.a(this);
+        }
+    };
     public int[] cost = new int[3];
     public long f;
 
@@ -40,6 +46,7 @@ public class MagicEnchantTableContainer extends Container implements InventoryVi
         }
     }
 
+    //绑定？
     public void a(ICrafting par1ICrafting) {
         super.a(par1ICrafting);
         par1ICrafting.a(this, 0, this.cost[0]);
@@ -47,6 +54,7 @@ public class MagicEnchantTableContainer extends Container implements InventoryVi
         par1ICrafting.a(this, 2, this.cost[2]);
     }
 
+    //tick更新
     public void b() {
         super.b();
         for (int var1 = 0; var1 < this.e.size(); var1++) {

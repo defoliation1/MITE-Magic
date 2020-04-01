@@ -23,4 +23,9 @@ public class SlothCurse extends MagicCurse {
         }
         return work;
     }
+
+    @Override
+    public int getMaxLevel() {
+        return 1;
+    }
 }
