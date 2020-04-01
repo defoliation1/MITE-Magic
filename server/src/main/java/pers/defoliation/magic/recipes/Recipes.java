@@ -19,7 +19,7 @@ public class Recipes {
         setAroundItem(magicLeather,8,Item.aH,magicstoneShard);
         craftingManager.addShapelessRecipe(new ItemStack(magicBook,1),magicPaper,magicPaper,magicPaper,magicLeather);
         craftingManager.addRecipe(new ItemStack(Blocks.magicEnchantingTable),true,
-                " # ","XAX","AAA",'#',magicBook,"X",magicstone,"A", Block.au);
+                " # ","XAX","AAA",'#',magicBook,'X',magicstone,'A', Block.au);
         craftingManager.addRecipe(new ItemStack(Blocks.magicBookshelf),true,
                 "MMM","SSS","MMM",'M',Block.C,'S',magicBook);
         craftingManager.addRecipe(new ItemStack(Blocks.magicAnvil),true,
