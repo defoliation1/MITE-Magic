@@ -5,14 +5,17 @@ import net.minecraft.ItemStack;
 
 public class CurseUtil {
 
-    public static void setEnchantmentWork(ItemStack itemStack,boolean b){
-        itemStack.q().a("enchWork",b);
+    public static void setEnchantmentWork(ItemStack itemStack, boolean b) {
+        itemStack.q().a("enchWork", b);
     }
 
-    public static boolean isEnchantmentWork(ItemStack itemStack){
-        MITENBTTagCompound nbtTagCompound = new MITENBTTagCompound(itemStack.q());
-        if (nbtTagCompound.hasKey("enchWork") && !nbtTagCompound.getBoolean("enchWork"))
-            return false;
+    public static boolean isEnchantmentWork(ItemStack itemStack) {
+        if (itemStack.q() != null) {
+            MITENBTTagCompound nbtTagCompound = new MITENBTTagCompound(itemStack.q());
+            if (nbtTagCompound != null)
+                if (nbtTagCompound.hasKey("enchWork") && !nbtTagCompound.getBoolean("enchWork"))
+                    return false;
+        }
         return true;
     }
 
