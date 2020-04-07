@@ -14,19 +14,24 @@ public class Recipes {
         CraftingManager craftingManager = CraftingManager.a();
         craftingManager.addRecipe(new ItemStack(magicstone, 1), true,
                 "###", "###", "###", '#', magicstoneShard);
-        setAroundItem(magicIngot,1,Item.ancientMetalNugget,magicstoneShard);
-        setAroundItem(magicPaper,8,Item.aM,magicstoneShard);
-        setAroundItem(magicLeather,8,Item.aH,magicstoneShard);
-        craftingManager.addShapelessRecipe(new ItemStack(magicBook,1),magicPaper,magicPaper,magicPaper,magicLeather);
-        craftingManager.addRecipe(new ItemStack(Blocks.magicEnchantingTable),true,
-                " # ","XAX","AAA",'#',magicBook,'X',magicstone,'A', Block.au);
-        craftingManager.addRecipe(new ItemStack(Blocks.magicBookshelf),true,
-                "MMM","SSS","MMM",'M',Block.C,'S',magicBook);
-        craftingManager.addRecipe(new ItemStack(Blocks.magicAnvil),true,
-                "KKK"," D ","DDD",'K',Blocks.magicMetalBlock,'D',magicIngot);
+        setAroundItem(magicIngot, 1, Item.ancientMetalNugget, magicstoneShard);
+        setAroundItem(magicPaper, 8, Item.aM, magicstoneShard);
+        setAroundItem(magicLeather, 8, Item.aH, magicstoneShard);
+        craftingManager.addShapelessRecipe(new ItemStack(magicBook, 1), magicPaper, magicPaper, magicPaper, magicLeather);
+        craftingManager.addRecipe(new ItemStack(Blocks.magicEnchantingTable), true,
+                " # ", "XAX", "AAA", '#', magicBook, 'X', magicstone, 'A', Block.au);
+        craftingManager.addRecipe(new ItemStack(Blocks.magicBookshelf), true,
+                "MMM", "SSS", "MMM", 'M', Block.C, 'S', magicBook);
+        craftingManager.addRecipe(new ItemStack(Blocks.magicAnvil), true,
+                "KKK", " D ", "DDD", 'K', Blocks.magicMetalBlock, 'D', magicIngot);
+
+        craftingManager.addRecipe(new ItemStack(Item.av, 1, 1), true,
+                "ZPZ",
+                "ZAZ",
+                "ZDZ", 'D', Block.L, 'P', Item.bF, 'A', new ItemStack(Item.av, 1, 0), 'Z', Item.p);
     }
 
-    private static void setAroundItem(Item result,int num,Item i1,Item i2){
+    private static void setAroundItem(Item result, int num, Item i1, Item i2) {
         CraftingManager craftingManager = CraftingManager.a();
         craftingManager.addRecipe(new ItemStack(result, num), true,
                 "###", "#X#", "###", '#', i1, 'X', i2);
