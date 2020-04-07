@@ -17,6 +17,10 @@ public class Recipes {
         setAroundItem(magicIngot, 1, Item.ancientMetalNugget, magicstoneShard);
         setAroundItem(magicPaper, 8, Item.aM, magicstoneShard);
         setAroundItem(magicLeather, 8, Item.aH, magicstoneShard);
+        craftingManager.addRecipe(new ItemStack(Blocks.magicMetalBlock),true,
+                "###",
+                "###",
+                "###",'#',magicIngot);
         craftingManager.addShapelessRecipe(new ItemStack(magicBook, 1), magicPaper, magicPaper, magicPaper, magicLeather);
         craftingManager.addRecipe(new ItemStack(Blocks.magicEnchantingTable), true,
                 " # ", "XAX", "AAA", '#', magicBook, 'X', magicstone, 'A', Block.au);
@@ -28,7 +32,7 @@ public class Recipes {
         craftingManager.addRecipe(new ItemStack(Item.av, 1, 1), true,
                 "ZPZ",
                 "ZAZ",
-                "ZDZ", 'D', Block.L, 'P', Item.bF, 'A', new ItemStack(Item.av, 1, 0), 'Z', Item.p);
+                "ZDZ", 'D', Block.am, 'P', Item.bF, 'A', new ItemStack(Item.av, 1, 0), 'Z', Item.p);
     }
 
     private static void setAroundItem(Item result, int num, Item i1, Item i2) {
