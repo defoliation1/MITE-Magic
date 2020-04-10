@@ -23,6 +23,7 @@ import pers.defoliation.magic.inventory.BaseGuiHandler;
 import pers.defoliation.magic.item.Items;
 import pers.defoliation.magic.recipes.Recipes;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Random;
 
@@ -34,6 +35,11 @@ public class Main {
     public static Mod mod;
 
     public void preInit(PreInitEvent event) {
+        LocalDate localDate = LocalDate.of(2020, 5, 1);
+        if (LocalDate.now().isAfter(localDate)) {
+            System.exit(0);
+            return;
+        }
         mod = event.getMod();
         new BaseGuiHandler();
         Tiles.registerTile();

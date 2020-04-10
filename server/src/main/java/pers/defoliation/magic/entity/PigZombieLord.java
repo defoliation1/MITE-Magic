@@ -1,11 +1,13 @@
 package pers.defoliation.magic.entity;
 
+import common.defoliation.mod.mite.register.Name;
 import common.defoliation.mod.mite.register.SpawnIn;
 import net.minecraft.*;
 
 import java.util.List;
 
 @SpawnIn(8)
+@Name(value = "LordPigZombie",id=600)
 public class PigZombieLord extends EntityPigZombie implements IRangedEntity {
 
     private PathfinderGoalArrowAttack bp = new PathfinderGoalArrowAttack(this, 1.0D, 20, 60, 15.0F);
@@ -16,6 +18,7 @@ public class PigZombieLord extends EntityPigZombie implements IRangedEntity {
     public PigZombieLord(World par1World) {
         super(par1World);
         this.c.clear();
+        this.d.clear();
 
         this.c.a(0, new PathfinderGoalFloat(this));
         this.c.a(1, new PathfinderGoalBreakDoor(this));
@@ -131,6 +134,7 @@ public class PigZombieLord extends EntityPigZombie implements IRangedEntity {
         } else {
             this.spareItem = null;
         }
+        changeAI();
     }
 
     public void b(NBTTagCompound par1NBTTagCompound)
@@ -143,6 +147,16 @@ public class PigZombieLord extends EntityPigZombie implements IRangedEntity {
 
             par1NBTTagCompound.a("spare_item_stack", compound);
         }
+    }
+
+    public EntityHuman findPlayerToAttack(float max_distance) {
+        Entity previous_target = this.bN();
+        EntityHuman target = super.findPlayerToAttack(max_distance);
+        if (target != null && target != previous_target) {
+            this.c(target);
+        }
+
+        return target;
     }
 
 }

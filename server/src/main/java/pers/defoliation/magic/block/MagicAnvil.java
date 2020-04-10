@@ -1,6 +1,7 @@
 package pers.defoliation.magic.block;
 
 import common.defoliation.Location;
+import common.defoliation.MITE;
 import common.defoliation.entity.PlayerEntity;
 import common.defoliation.mod.liar.EntityPlayerLiar;
 import net.minecraft.*;
@@ -8,11 +9,14 @@ import pers.defoliation.magic.Main;
 import pers.defoliation.magic.block.tile.MagicAnvilTileEntity;
 import pers.defoliation.magic.inventory.BaseGuiHandler;
 
+import java.util.Objects;
+
 public class MagicAnvil extends BlockAnvil {
 
     public MagicAnvil(int par1, Material metal_type) {
         super(par1, metal_type);
         c("magic_anvil");
+        c(3.0f);
     }
 
     public void a(IconRegister par1IconRegister) {

@@ -21,9 +21,14 @@ public class LygophobiaCurse extends MagicCurse {
         PlayerEntity mitePlayerEntity = ((EntityHumanLiar) (Object) entityHuman).getPlayer();
         Location location = mitePlayerEntity.getLocation();
         if (entityHuman.q.n(location.getBlockX(), location.getBlockY(), location.getBlockZ()) < 7){
-            CurseUtil.setEnchantmentWork(itemStack,false);
             return false;
         }
         return true;
     }
+
+    @Override
+    public int getMaxLevel() {
+        return 1;
+    }
+
 }

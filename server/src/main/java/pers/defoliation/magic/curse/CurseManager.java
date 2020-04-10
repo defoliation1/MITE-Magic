@@ -6,6 +6,7 @@ import common.defoliation.mod.mite.event.CreativeTabAddItemEvent;
 import common.defoliation.mod.mite.inventory.ItemStackWrapper;
 import common.defoliation.mod.mite.nbt.MITENBTTagCompound;
 import common.defoliation.nbt.NBTTagCompound;
+import common.defoliation.util.serialization.SerializationUtil;
 import net.minecraft.*;
 import pers.defoliation.magic.Main;
 
@@ -50,7 +51,7 @@ public class CurseManager {
     public List<CurseLevel> getCursesFromItemStack(ItemStack itemStack) {
         ItemStackWrapper itemStackWrapper = ItemStackWrapper.of(itemStack);
         NBTTagCompound nbtTagCompound = itemStackWrapper.getNBT();
-        if (!nbtTagCompound.hasKey(CURSE))
+        if (nbtTagCompound == null || !nbtTagCompound.hasKey(CURSE))
             return Collections.emptyList();
         NBTTagCompound curseCompound = nbtTagCompound.getCompound(CURSE);
         ArrayList<CurseLevel> list = new ArrayList();
@@ -65,7 +66,7 @@ public class CurseManager {
     public <T extends Curse> Optional<CurseLevel<T>> getCurseFromItemStack(ItemStack itemStack, T curse) {
         ItemStackWrapper itemStackWrapper = ItemStackWrapper.of(itemStack);
         NBTTagCompound nbtTagCompound = itemStackWrapper.getNBT();
-        if (!nbtTagCompound.hasKey(CURSE))
+        if (nbtTagCompound==null||!nbtTagCompound.hasKey(CURSE))
             return Optional.empty();
         NBTTagCompound curseCompound = nbtTagCompound.getCompound(CURSE);
         if (!curseCompound.hasKey(curse.getName()))
@@ -74,9 +75,11 @@ public class CurseManager {
     }
 
     public boolean hasCurse(ItemStack itemStack, Curse curse) {
+        if (itemStack.b() == Item.bY)
+            return false;
         ItemStackWrapper itemStackWrapper = ItemStackWrapper.of(itemStack);
-        NBTTagCompound nbtTagCompound = itemStackWrapper.getNBT();
-        if (!nbtTagCompound.hasKey(CURSE))
+        MITENBTTagCompound nbtTagCompound = (MITENBTTagCompound) itemStackWrapper.getNBT();
+        if (nbtTagCompound==null||!nbtTagCompound.hasKey(CURSE))
             return false;
         NBTTagCompound curseCompound = nbtTagCompound.getCompound(CURSE);
         return curseCompound.hasKey(curse.getName());
@@ -88,7 +91,7 @@ public class CurseManager {
 
     public void applyCurse(ItemStack itemStack, CurseLevel curseLevel) {
         ItemStackWrapper itemStackWrapper = ItemStackWrapper.of(itemStack);
-        NBTTagCompound nbtTagCompound = itemStackWrapper.getNBT();
+        MITENBTTagCompound nbtTagCompound = (MITENBTTagCompound) itemStackWrapper.getNBT(true);
         NBTTagCompound curseCompound;
         if (nbtTagCompound.hasKey(CURSE)) {
             curseCompound = nbtTagCompound.getCompound(CURSE);
@@ -160,4 +163,13 @@ public class CurseManager {
     }
 
 
+    public boolean hasCurse(ItemStack item_stack) {
+        if (item_stack.b() == Item.bY)
+            return false;
+        ItemStackWrapper itemStackWrapper = ItemStackWrapper.of(item_stack);
+        MITENBTTagCompound nbtTagCompound = (MITENBTTagCompound) itemStackWrapper.getNBT();
+        if (nbtTagCompound == null)
+            return false;
+        return nbtTagCompound.hasKey(CURSE);
+    }
 }

@@ -33,7 +33,7 @@ public class GuiMagicAnvilContainer extends GuiContainer implements InventoryVie
             b(var4 + 99, var5 + 45, c, 0, 28, 21);
         }
         if (magicAnvilContainer.getTopInventory().getItem(0) != null)
-            if (magicAnvilContainer.cost > magicAnvilContainer.player.getExperienceValue())
+            if (magicAnvilContainer.cost > magicAnvilContainer.player.bJ)
                 o.b("§4需要: " + magicAnvilContainer.cost + " xp", var4 + 99, var5 + 35, 4210752);
             else {
                 o.b("§2需要: " + magicAnvilContainer.cost + " xp", var4 + 99, var5 + 35, 4210752);

@@ -19,11 +19,11 @@ public class EnvyCurse extends MagicCurse {
     }
 
     public static void modifier(EntityHuman entityHuman, ItemStack itemStack) {
-        CurseManager.INSTANCE.getCurseFromItemStack(itemStack,Curses.envy).ifPresent(curseLevel -> {
+        CurseManager.INSTANCE.getCurseFromItemStack(itemStack, Curses.envy).ifPresent(curseLevel -> {
             int envyLevel = curseLevel.level;
             if (envyLevel <= 0)
                 return;
-            long now = DimensionManager.getWorld(0).I() / 20;
+            long now = DimensionManager.getWorld(0).I();
             MITENBTTagCompound miteNBT = (MITENBTTagCompound) ItemStackWrapper.of(itemStack).getNBT();
             if (!miteNBT.hasKey("envy")) {
                 miteNBT.setLong("envy", now);
@@ -45,12 +45,13 @@ public class EnvyCurse extends MagicCurse {
 
             long l = miteNBT.getLong("envy");
 
-            int dTime = 60 * 20 * 5 / envyLevel;
+            int dTime = 60 * 15 * 20 / envyLevel;
 
-            if (now > l + dTime && (l+dTime)%(dTime/5)==0) {
-                entityHuman.g(1f);
+            if (now > l + dTime) {
+                entityHuman.attackEntityFrom(new Damage(DamageSource.j, 1));
                 if (MITE.getMITE().isRemote())
-                    ((EntityHumanLiar) (Object) entityHuman).getPlayer().sendMessage(LocaleI18n.a("message.envy.damage", itemStack.s()));
+                    ((EntityHumanLiar) (Object) entityHuman).getPlayer().sendMessage(String.format(LocaleI18n.a("message.envy.damage"), itemStack.s()));
+                miteNBT.setLong("envy", now);
             }
         });
     }

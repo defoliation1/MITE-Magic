@@ -9,6 +9,7 @@ import common.defoliation.mod.mite.inventory.MITEInventory;
 import common.defoliation.mod.mite.inventory.SimpleInventory;
 import net.minecraft.*;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
+import pers.defoliation.magic.block.Blocks;
 import pers.defoliation.magic.block.MagicAnvil;
 import pers.defoliation.magic.block.tile.MagicAnvilTileEntity;
 import pers.defoliation.magic.curse.CurseManager;
@@ -58,7 +59,7 @@ public class MagicAnvilContainer extends Container implements InventoryView {
 
             //TODO 是否能拿出来
             public boolean a(EntityHuman par1EntityPlayer) {
-                return cost <= par1EntityPlayer.bJ && cost > 0;
+                return cost > 0 && cost <= par1EntityPlayer.bJ;
             }
 
             public void a(EntityHuman par1EntityPlayer, ItemStack par2ItemStack) {
@@ -170,7 +171,7 @@ public class MagicAnvilContainer extends Container implements InventoryView {
         }
 
         if (this.cost > player.bJ) {
-            //TODO 拒绝
+            //拒绝
             simpleInventory.a(2, null);
             return;
         }

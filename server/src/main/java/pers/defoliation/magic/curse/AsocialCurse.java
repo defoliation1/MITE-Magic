@@ -22,8 +22,6 @@ public class AsocialCurse extends MagicCurse {
                 }
             }
         }
-        if(!work)
-            CurseUtil.setEnchantmentWork(itemStack, false);
         return work;
     }
 
@@ -31,4 +29,10 @@ public class AsocialCurse extends MagicCurse {
     public boolean canCurse(Item item) {
         return item instanceof ItemArmor;
     }
+
+    @Override
+    public int getMaxLevel() {
+        return 1;
+    }
+
 }

@@ -1,6 +1,10 @@
 package pers.defoliation.magic.item;
 
+import com.sun.prism.paint.Color;
 import net.minecraft.Material;
+import net.minecraft.MaterialMapColor;
+
+import java.awt.*;
 
 public class Items {
 
@@ -17,9 +21,12 @@ public class Items {
     static {
         magicstoneMaterial.setDurability(2).
                 setMinHarvestLevel(3)
+                .setMapColor(new MaterialMapColor(28, 0xFFC0CBFF))
                 .setRockyMineral()
                 .f()
-                .setMetal(true);
+                .setMetal(true)
+                .setDurability(12f)
+                .setEnchantability(20);
     }
 
     public static void registerItems() {

@@ -19,7 +19,6 @@ public class SlothCurse extends MagicCurse {
         boolean work = true;
         if (DimensionManager.getWorld(0).getHourOfDay() < 6 || DimensionManager.getWorld(0).getHourOfDay() > 18){
             work = false;
-            CurseUtil.setEnchantmentWork(itemStack,false);
         }
         return work;
     }

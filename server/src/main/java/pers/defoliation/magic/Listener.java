@@ -5,10 +5,8 @@ import common.defoliation.event.world.WorldGenMinableEvent;
 import common.defoliation.mod.mite.entity.MITEEntity;
 import common.defoliation.mod.mite.event.EntityTargetEvent;
 import common.defoliation.mod.mite.event.ItemTooltipEvent;
-import common.defoliation.world.Minable;
 import net.minecraft.EntityPigZombie;
 import net.minecraft.LocaleI18n;
-import pers.defoliation.magic.block.Blocks;
 import pers.defoliation.magic.curse.CurseManager;
 import pers.defoliation.magic.entity.PigZombieLord;
 
@@ -41,32 +39,7 @@ public class Listener {
                 }
             }
             worldGenMinableEvent.genGenMinables().remove(removeMithril);
-            worldGenMinableEvent.genGenMinables().add(new WorldGenMinableEvent.GenMinable(20, new Minable() {
-                @Override
-                public int getOreId() {
-                    return Blocks.magicstoneOre.cF;
-                }
-
-                @Override
-                public int getMetadata() {
-                    return 0;
-                }
-
-                @Override
-                public int getSize() {
-                    return 4;
-                }
-
-                @Override
-                public int getBlockId() {
-                    return 1;
-                }
-
-                @Override
-                public boolean increasesWithDepth() {
-                    return false;
-                }
-            }, false));
+            worldGenMinableEvent.genGenMinables().add(new WorldGenMinableEvent.GenMinable(20, new MagicOreMinable(), false));
         } else if (worldGenMinableEvent.getWorld().getName().equals("Nether")) {
             for (WorldGenMinableEvent.GenMinable genMinable : worldGenMinableEvent.genGenMinables()) {
                 //石英
@@ -81,8 +54,9 @@ public class Listener {
     @EventHandler
     public void itemTooltipEvent(ItemTooltipEvent event) {
         List<String> list = event.toolTip;
-        CurseManager.INSTANCE.getCursesFromItemStack(event.itemStack).forEach(curseLevel ->
-                list.add("§c" + curseLevel.curse.getTranslateName() + " " + (curseLevel.curse.getMaxLevel() > 1 ? LocaleI18n.a("enchantment.level." + curseLevel.level) : "")));
+        if (CurseManager.INSTANCE.hasCurse(event.itemStack))
+            CurseManager.INSTANCE.getCursesFromItemStack(event.itemStack).forEach(curseLevel ->
+                    list.add("§c" + curseLevel.curse.getTranslateName() + " " + (curseLevel.curse.getMaxLevel() > 1 ? LocaleI18n.a("enchantment.level." + curseLevel.level) : "")));
     }
 
     @EventHandler

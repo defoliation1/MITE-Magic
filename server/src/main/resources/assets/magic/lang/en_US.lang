@@ -5,14 +5,14 @@ item.magic_paper.name=魔法纸
 item.magicstone.name=魔法结晶
 item.magicstone_shard.name=魔法碎片
 
-tile.magic_anvil.name=古金属魔法毡
+tile.magic_anvil=古金属魔法毡
 tile.magic_bookshelf.name=魔法书架
 tile.magic_enchanting_table.name=高级附魔台
 tile.magic_metal_block.name=古金属魔法块
 tile.magicstone_ore.name=魔法源矿
-tile.magic_anvil.intact=古金属魔法毡
-tile.magic_anvil.slightlyDamaged=受损的古金属魔法毡
-tile.magic_anvil.veryDamaged=严重受损的古金属魔法毡
+tile.magic_anvil.intact.name=古金属魔法毡
+tile.magic_anvil.slightlyDamaged.name=受损的古金属魔法毡
+tile.magic_anvil.veryDamaged.name=严重受损的古金属魔法毡
 
 curse.asocial=不合群
 curse.blaster=爆炸
@@ -30,3 +30,5 @@ curse.weak=虚弱
 
 message.bloodthirsty.damage=§4你的 %s 咬了你一口
 message.envy.damage=§4你的 %s 生气了
+
+entity.LordPigZombie.name=僵尸猪人领主

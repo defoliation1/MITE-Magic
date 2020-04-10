@@ -1,9 +1,6 @@
 package pers.defoliation.magic.block;
 
-import net.minecraft.EnumDirection;
-import net.minecraft.Item;
-import net.minecraft.ItemAnvil;
-import net.minecraft.ItemBlock;
+import net.minecraft.*;
 import pers.defoliation.magic.item.Items;
 
 public class Blocks {
@@ -15,8 +12,8 @@ public class Blocks {
     public static MagicAnvil magicAnvil;
 
     public static void registerBlocks(){
-        magicstoneOre = new MagicstoneOre(160, Items.magicstoneMaterial,4);
-        magicMetalBlock = new MagicMetalBlock(161,Items.magicstoneMaterial);
+        magicstoneOre = new MagicstoneOre(160, Items.magicstoneMaterial,2);
+        magicMetalBlock = new MagicMetalBlock(161, Material.f);
         magicEnchantingTable = new MagicEnchantTable(162);
         magicBookshelf = new MagicBookshelf(163);
         magicAnvil = new MagicAnvil(164,Items.magicstoneMaterial);
@@ -35,6 +32,11 @@ public class Blocks {
         Item.g[magicMetalBlock.cF] = new ItemBlock(magicMetalBlock);
         Item.g[magicEnchantingTable.cF] = new ItemBlock(magicEnchantingTable);
         Item.g[magicBookshelf.cF] = new ItemBlock(magicBookshelf);
-        Item.g[magicAnvil.cF] = new ItemAnvil(magicAnvil);
+        Item.g[magicAnvil.cF] = new ItemAnvil(magicAnvil){
+            @Override
+            public BlockAnvil getBlock() {
+                return magicAnvil;
+            }
+        };
     }
 }

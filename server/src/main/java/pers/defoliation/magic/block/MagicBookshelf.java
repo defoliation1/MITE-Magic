@@ -12,7 +12,8 @@ public class MagicBookshelf extends BlockBookshelf {
         super(par1);
         d("magic:magic_bookshelf_side")
         .c("magic_bookshelf")
-        ;
+        .c(1f);
+        setMaxStackSize(4);
     }
 
     public int dropBlockAsEntityItem(BlockBreakInfo info) {

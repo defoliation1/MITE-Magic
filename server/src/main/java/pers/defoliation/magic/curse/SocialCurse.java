@@ -18,13 +18,16 @@ public class SocialCurse extends MagicCurse {
                 break;
             }
         }
-        if (!work)
-            CurseUtil.setEnchantmentWork(itemStack, false);
         return work;
     }
 
     @Override
     public boolean canCurse(Item item) {
         return item instanceof ItemArmor;
+    }
+
+    @Override
+    public int getMaxLevel() {
+        return 1;
     }
 }

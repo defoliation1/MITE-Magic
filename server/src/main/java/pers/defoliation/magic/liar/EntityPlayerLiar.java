@@ -1,10 +1,10 @@
 package pers.defoliation.magic.liar;
 
+import common.defoliation.MITE;
 import common.defoliation.mod.liar.EntityHumanLiar;
 import net.minecraft.*;
 import net.minecraft.server.MinecraftServer;
 import pers.defoliation.magic.curse.*;
-import pers.defoliation.magic.curse.Curse;
 import team.unknowndomain.liar.annotation.Deceive;
 import team.unknowndomain.liar.annotation.Liar;
 
@@ -85,13 +85,6 @@ public abstract class EntityPlayerLiar extends EntityHuman {
             }
             this.try_push_out_of_blocks = false;
         }
-        if (this.bu != null && this.isZevimrgvInTournament()) {
-            this.bG.c = true;
-        }
-        if (Minecraft.inDevMode() || this.isZevimrgvInTournament()) {
-            final int load = (int) (this.b.getLoadOnServer() * 100.0f);
-            this.sendPacket(new Packet85SimpleSignal(EnumSignal.server_load).setShort((load < 1000) ? load : 1000));
-        }
         if (this.initial_on_update) {
             if (DedicatedServer.tournament_type == EnumTournamentType.score) {
                 DedicatedServer.generatePrizeKeyFile((EntityPlayer) (Object) this);
@@ -112,7 +105,7 @@ public abstract class EntityPlayerLiar extends EntityHuman {
             if (this.ticks_logged_in < 1000) {
                 this.sendPacket(new Packet85SimpleSignal(EnumSignal.mh).setInteger((int) this.q.H()));
             } else {
-                this.b.an().b(this.bu + " never sent a master hash!");
+                this.b.an().b(this.bu + " never sent a master haCsh!");
                 this.master_hash_received = true;
             }
         }
@@ -288,9 +281,6 @@ public abstract class EntityPlayerLiar extends EntityHuman {
             if (this.allotted_time > 0) {
                 --this.allotted_time;
             }
-            if (this.allotted_time == 0 && this.isZevimrgvInTournament()) {
-                this.allotted_time = 20;
-            }
             if (this.allotted_time == 0) {
                 DedicatedServer.players_kicked_for_depleted_time_shares.put(this.bu, new Long(this.q.I()));
                 this.a.c("Time share depleted");
@@ -357,7 +347,7 @@ public abstract class EntityPlayerLiar extends EntityHuman {
                 }
 
 
-                if (item_stack.isEnchantable()) {
+                if (MITE.getMITE().isRemote() && CurseManager.INSTANCE.hasCurse(item_stack)) {
                     if (CurseManager.INSTANCE.hasCurse(item_stack, Curses.pride)) {
                         Optional<CurseLevel<PrideCurse>> curseFromItemStack = CurseManager.INSTANCE.getCurseFromItemStack(item_stack, Curses.pride);
                         if (!PrideCurse.canHold(curseFromItemStack.get().level, ((EntityHumanLiar) (Object) getAsPlayer()).getPlayer().getLevel())) {
@@ -366,8 +356,9 @@ public abstract class EntityPlayerLiar extends EntityHuman {
                             continue;
                         }
                     }
-                    CurseUtil.setEnchantmentWork(item_stack, true);
+
                     boolean work = true;
+
                     if (CurseManager.INSTANCE.hasCurse(item_stack, Curses.lygophobia)) {
                         work = LygophobiaCurse.modifier(this, item_stack);
                     }
@@ -379,6 +370,10 @@ public abstract class EntityPlayerLiar extends EntityHuman {
                     }
                     if (work && CurseManager.INSTANCE.hasCurse(item_stack, Curses.sloth)) {
                         SlothCurse.modifier(item_stack);
+                    }
+
+                    if (CurseUtil.isEnchantmentWork(item_stack) ^ work) {
+                        CurseUtil.setEnchantmentWork(item_stack, work);
                     }
 
                     if (CurseManager.INSTANCE.hasCurse(item_stack, Curses.bloodthirsty))
@@ -393,13 +388,6 @@ public abstract class EntityPlayerLiar extends EntityHuman {
 
         for (ItemStack gluttonyItem : gluttonyItems) {
             GluttonyCurse.modifier(gluttonyItem, bn);
-        }
-
-        for (int i = 0; i < this.bn.a.length; i++) {
-            ItemStack item_stack = this.bn.getInventorySlotContents(i);
-            if (item_stack != null && item_stack.b <= 0) {
-                this.bn.a(i, null);
-            }
         }
 
         if (steam_and_hiss) {

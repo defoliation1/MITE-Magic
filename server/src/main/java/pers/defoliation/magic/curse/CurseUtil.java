@@ -13,8 +13,8 @@ public class CurseUtil {
         if (itemStack.q() != null) {
             MITENBTTagCompound nbtTagCompound = new MITENBTTagCompound(itemStack.q());
             if (nbtTagCompound != null)
-                if (nbtTagCompound.hasKey("enchWork") && !nbtTagCompound.getBoolean("enchWork"))
-                    return false;
+                if (nbtTagCompound.hasKey("enchWork"))
+                    return nbtTagCompound.getBoolean("enchWork");
         }
         return true;
     }
