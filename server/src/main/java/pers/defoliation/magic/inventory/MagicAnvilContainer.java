@@ -28,11 +28,14 @@ public class MagicAnvilContainer extends Container implements InventoryView {
 
     private ItemStack computeItem;
 
+    private Slot itemSlot;
+    private Slot magicSlot;
+
     public MagicAnvilContainer(EntityHuman player, Location location) {
         super(player);
         this.location = location;
 
-        a(new Slot(simpleInventory, 0, 27, 47) {
+        itemSlot = new Slot(simpleInventory, 0, 27, 47) {
             public boolean a(ItemStack par1ItemStack) {
                 NBTTagList stored_enchantments = par1ItemStack.r();
                 if (stored_enchantments != null
@@ -41,15 +44,18 @@ public class MagicAnvilContainer extends Container implements InventoryView {
                     return true;
                 return false;
             }
-        });
-
-        a(new Slot(simpleInventory, 1, 76, 47) {
+        };
+        magicSlot = new Slot(simpleInventory, 1, 76, 47) {
             public boolean a(ItemStack par1ItemStack) {
                 if (par1ItemStack.d == Items.magicstone.cv)
                     return true;
                 return false;
             }
-        });
+        };
+
+        a(itemSlot);
+
+        a(magicSlot);
 
         a(new Slot(simpleInventory, 2, 134, 47) {
 
@@ -105,7 +111,35 @@ public class MagicAnvilContainer extends Container implements InventoryView {
 
     //shift
     public ItemStack b(EntityHuman par1EntityPlayer, int par2) {
-        return null;
+        Slot slot = (Slot) this.c.get(par2);
+        //slot.e() -> slot.hasStack();
+        if (slot == null || !slot.e())
+            return null;
+        ItemStack newStack = slot.d();
+        ItemStack oldStack = newStack.m();
+
+        boolean flag = false;
+
+        if (par2 >= 0 && par2 <= 2) {
+            flag = a(newStack, 3, 39, true);
+        } else {
+            flag = (!itemSlot.e() && a(newStack, 0, 1, false)) || a(newStack,1,2,false);
+        }
+
+        if (!flag)
+            return null;
+
+        if (newStack.b == 0) {
+            slot.c(null);
+        } else {
+            //onSlotChange
+            slot.f();
+        }
+
+        //onPickupFromSlot
+        slot.a(par1EntityPlayer, newStack);
+
+        return oldStack;
     }
 
     //当被关闭时

@@ -141,7 +141,52 @@ public class MagicEnchantTableContainer extends Container implements InventoryVi
     //shift
     @Override
     public ItemStack b(final EntityHuman par1EntityPlayer, final int par2) {
-        return null;
+        ItemStack var3 = null;
+        Slot var4 = (Slot)this.c.get(par2);
+        if ((var4 != null) && (var4.e()))
+        {
+            ItemStack var5 = var4.d();
+            var3 = var5.m();
+            if (par2 == 0)
+            {
+                if (!a(var5, 1, 37, true)) {
+                    return null;
+                }
+            }
+            else
+            {
+                if ((((Slot)this.c.get(0)).e()) || (!((Slot)this.c.get(0)).a(var5))) {
+                    return null;
+                }
+                if ((var5.p()) && (var5.b == 1))
+                {
+                    ((Slot)this.c.get(0)).c(var5.m());
+                    var5.b = 0;
+                }
+                else if (var5.b >= 1)
+                {
+                    ItemStack item_stack = new ItemStack(var5.d, 1, var5.getItemSubtype());
+                    if (var5.i()) {
+                        item_stack.setItemDamage(var5.k());
+                    }
+                    if (var5.b().hasQuality()) {
+                        item_stack.setQuality(var5.getQuality());
+                    }
+                    ((Slot)this.c.get(0)).c(item_stack);
+                    var5.b -= 1;
+                }
+            }
+            if (var5.b == 0) {
+                var4.c((ItemStack)null);
+            } else {
+                var4.f();
+            }
+            if (var5.b == var3.b) {
+                return null;
+            }
+            var4.a(par1EntityPlayer, var5);
+        }
+        return var3;
     }
 
     @Override
